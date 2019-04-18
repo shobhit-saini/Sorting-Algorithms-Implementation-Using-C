@@ -1,0 +1,76 @@
+#include <stdio.h>
+void heapSort (int[], int);
+void heapify (int[], int, int);
+void swap (int *, int *);
+int
+main ()
+{
+  int n, i, a[100];
+  printf ("Enter the array size(max 100):");
+  scanf ("%d", &n);
+  printf ("Enter array elements:");
+  for (i = 0; i < n; i++)
+    {
+      scanf ("%d", &a[i]);
+    }
+  heapSort (a, n);
+  printf ("Sorted Array:");
+  for (i = 0; i < n; i++)
+    {
+      printf ("%d\t", a[i]);
+    }
+
+  return 0;
+}
+
+void
+heapSort (int a[], int n)
+{
+  // Build heap:rearrange array 
+  //Time complexity:O(n)
+  for (int i = n / 2 - 1; i >= 0; i--)
+    heapify (a, n, i);
+
+  // One by one extract an element from heap and move to end
+  for (int i = n - 1; i >= 0; i--)
+    {
+      // Move current root to end 
+      swap (&a[0], &a[i]);
+
+      //call max heapify() on the reduced heap 
+      heapify (a, i, 0);	//Time complexity=O(logn) for one time call
+    }
+}
+
+void
+heapify (int a[], int n, int i)
+{
+  int largest = i;		// Initialize largest as root 
+  int l = 2 * i + 1;		// left child= 2*i + 1 
+  int r = 2 * i + 2;		// right child= 2*i + 2 
+
+  // If left child is larger than root 
+  if (l < n && a[l] > a[largest])
+    largest = l;
+  //If right child is larger than largest  
+  if (r < n && a[r] > a[largest])
+    largest = r;
+
+  //If largest is not root 
+  if (largest != i)
+    {
+      swap (&a[i], &a[largest]);
+
+      // Recursively heapify sub-tree 
+      heapify (a, n, largest);
+    }
+}
+
+void
+swap (int *i, int *j)
+{
+  int temp;
+  temp = *i;
+  *i = *j;
+  *j = temp;
+}
